@@ -1,5 +1,6 @@
 import { id as SCRIPT_ID } from "../module.json";
 import { settings } from "./utilities/Utilities.js";
+import FlexibleLoadoutCollectionStore from "./FlexibleLoadoutCollectionStore.js"
 
 export default class FlexibleLoadoutSettings {
     
@@ -18,8 +19,13 @@ export default class FlexibleLoadoutSettings {
         game.settings.register(SCRIPT_ID,  settings.repertoireCount.id, {
             name: settings.repertoireCount.name,
             scope: 'client',
+            requiresReload: true,
             config: true,
-            default: "2",
+            default: 2,
+            range: {
+                min: 2,
+                max: 3
+            },
             type: Number
         });
 
@@ -29,7 +35,7 @@ export default class FlexibleLoadoutSettings {
             scope: 'client',
             config: false,
             default: "",
-            type: String
+            type: FlexibleLoadoutCollectionStore
         });
     }
 }

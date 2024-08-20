@@ -1,20 +1,18 @@
 import { id as SCRIPT_ID, title as SCRIPT_NAME } from "../module.json";
+import FlexibleLoadoutReplacer from "./FlexibleLoadoutReplacer.js";
+import CharacterSheetHook from "./hooks/CharacterSheetHook.js";
 import { popup, settings, getSettings } from "./utilities/Utilities.js";
-
-export const replaceCollection = SCRIPT_ID + "-selection-actor";
 
 export default class FlexibleLoadoutRunner {
 
     constructor() {
-        if (getSettings(settings.repertoireCount.id) < 2 || getSettings(settings.repertoireCount.id) > 6) {
-            popup("Bad configuration");
-            return
-        }
 
         // Register Sheet link for everyone
-        //new SpellSheetHook();
-    }
+        new CharacterSheetHook();
 
+        // Add replacer module
+        new FlexibleLoadoutReplacer();
+    }
 
     /**
      * Runs comparison for all Items in actors, comparing them to the Items in the PF2e Compendium

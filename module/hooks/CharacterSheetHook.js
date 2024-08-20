@@ -1,15 +1,13 @@
 import { id as SCRIPT_ID, title as SCRIPT_NAME } from "../../module.json";
-import { replaceCollection } from "../FlexibleLoadoutRunner.js";
-import { info } from "../utilities/Utilities.js";
-import { getNestedProperty } from "../utilities/Utilities.js";
+import { replaceLoadedCollection } from "../FlexibleLoadoutReplacer.js";
+import { info, getNestedProperty } from "../utilities/Utilities.js";
 
-export default class SpellSheetHook {
+export default class CharacterSheetHook {
     
     constructor() {
         // Wait for app to be ready
         Hooks.once('ready', () => {
             info("Creating Hooks for Spell Sheet rendering")
-            //renderSpellPreparationSheet
 
             /**
              * Register hooks for all Character sheets
@@ -55,7 +53,7 @@ export default class SpellSheetHook {
             );
 
             // add onclick event to start a Revitalizer run for Actor Id
-            button.click(() => Hooks.call(replaceCollection, [data.actor._id], 1));
+            button.click(() => Hooks.call(replaceLoadedCollection, [data.actor._id], 1));
 
             // remove any existing versions of button
             html.closest('.app').find(`.${className}`).remove();
