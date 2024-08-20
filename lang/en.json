@@ -1,0 +1,22 @@
+{
+    "pf2e-flexible-loadout": {
+        "settings": {
+            "debug": {
+                "name": "Print debug to console log",
+                "hint": ""
+            }
+        },
+        "script": {
+            "name": "PF2E Flexible Loadout",
+            "title": "Flexible Loadout",
+            "close_button": "Close",
+            "results_title": "Results",
+            "actor": "Actor",
+            "item_type": "Type",
+            "item_name": "Name",
+            "changed_property": "Changed Property",
+            "origin_item": "Origin Item",
+            "actor_item": "Actor's Item"
+        }
+    }
+}
