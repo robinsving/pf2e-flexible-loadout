@@ -1,5 +1,5 @@
-import { id as SCRIPT_ID } from "../module.json";
-import { settings } from "./utilities/Utilities.js";
+import { id as SCRIPT_ID } from "../../module.json";
+import { settings } from "../utilities/Utilities.js";
 import FlexibleLoadoutCollectionStore from "./FlexibleLoadoutCollectionStore.js"
 
 export default class FlexibleLoadoutSettings {

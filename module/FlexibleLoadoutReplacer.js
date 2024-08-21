@@ -7,7 +7,7 @@ export default class FlexibleLoadoutReplacer {
 
     constructor() {
         // Wait for app to be ready
-        Hooks.once(replaceLoadedCollection, (actorId, collection) => {
+        Hooks.on(replaceLoadedCollection, (actorId, collection) => {
             info("Acting on Character Sheet clicking")
         });
     }

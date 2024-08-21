@@ -1,6 +1,6 @@
 import { id as SCRIPT_ID, title as SCRIPT_NAME } from "../../module.json";
 import { replaceLoadedCollection } from "../FlexibleLoadoutReplacer.js";
-import { info, getNestedProperty } from "../utilities/Utilities.js";
+import { info, getNestedProperty, getSettings, settings } from "../utilities/Utilities.js";
 
 export default class CharacterSheetHook {
     
@@ -30,11 +30,46 @@ export default class CharacterSheetHook {
 
             if (!actorId)
                 return;
+
+            const actor = getNestedProperty(data, "actor");
+
+            // fetch current Actor's collections
+            //TODO1: this actor does not seem to have "spellcasting"
+            const actorCollections = getNestedProperty(actor, "spellcasting.collections").filter(collection => collection.size)
             
+            // if there are no spell collections, we needn't continue
+            if (!actorCollections)
+                return;
+
+            /* TODO
+                Remove any existing versions of button
+            */
+           
+            // load Collections for Actor
+            const collectionCount = getSettings(settings.repertoireCount.id);
+            const repertoireStorage = getSettings(settings.repertoireStorage.id);
+
+            // If this Actor has nothing stored
+            if (!repertoireStorage.hasActor(actorId))
+                repertoireStorage.addActor(actorId);
+
+            const flexibleCollections = repertoireStorage.getActor(actorId);
+
+            actorCollections.forEach(collection => {
+                info(collection);
+
+                // TODO: Create the missing flexible cllections
+                // Create new flexible collections if there are lacking for this actor
+                for (let index = actorCollections.length; index < collectionCount; index++) {
+                    actorCollections[index] = 
+                    info(actorCollections.length);
+                }
+            });
+
+
             /* TODO
 
-            Remove any existing versions of button
-            for each Collection number, iterate through list of Collections
+            for each Collection belonging to actor
                 Check if they exist, otherwise copy from actorId's default Collection
                 Create a button for each, with name and appropriate Collection
 

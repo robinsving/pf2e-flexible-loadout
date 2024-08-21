@@ -10,6 +10,9 @@ const settings = {
 function getSettings(setting) {
     return game.settings.get(SCRIPT_ID, setting);
 }
+function setSettings(setting, value) {
+    return game.settings.set(SCRIPT_ID, setting, value);
+}
 
 function getNestedProperty(obj, path) {
     try {

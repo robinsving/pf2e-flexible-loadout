@@ -1,5 +1,5 @@
 import FlexibleLoadoutRunner from "./FlexibleLoadoutRunner";
-import FlexibleLoadoutSettings from "./FlexibleLoadoutSettings";
+import FlexibleLoadoutSettings from "./settings/FlexibleLoadoutSettings";
 import { info } from "./utilities/Utilities";
 
 $(document).ready(() => {

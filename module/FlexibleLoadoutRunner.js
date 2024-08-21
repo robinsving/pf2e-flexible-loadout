@@ -6,12 +6,12 @@ import { popup, settings, getSettings } from "./utilities/Utilities.js";
 export default class FlexibleLoadoutRunner {
 
     constructor() {
+    
+        // Add replacer module
+        new FlexibleLoadoutReplacer();
 
         // Register Sheet link for everyone
         new CharacterSheetHook();
-
-        // Add replacer module
-        new FlexibleLoadoutReplacer();
     }
 
     /**
