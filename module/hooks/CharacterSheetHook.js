@@ -31,14 +31,12 @@ export default class CharacterSheetHook {
             if (!actorId)
                 return;
 
-            const actor = getNestedProperty(data, "actor");
-
             // fetch current Actor's collections
-            //TODO1: this actor does not seem to have "spellcasting"
-            const actorCollections = getNestedProperty(actor, "spellcasting.collections").filter(collection => collection.size)
-            
+            const actorCollections = getNestedProperty(data, "spellCollectionGroups.known-spells")
+                .filter(s => s.isPrepared && s.hasCollection); // || s.isFlexible)
+
             // if there are no spell collections, we needn't continue
-            if (!actorCollections)
+            if (!actorCollections.length)
                 return;
 
             /* TODO
@@ -53,16 +51,12 @@ export default class CharacterSheetHook {
             if (!repertoireStorage.hasActor(actorId))
                 repertoireStorage.addActor(actorId);
 
-            const flexibleCollections = repertoireStorage.getActor(actorId);
-
             actorCollections.forEach(collection => {
-                info(collection);
+                info(collection.id);
 
-                // TODO: Create the missing flexible cllections
-                // Create new flexible collections if there are lacking for this actor
+                // Create new flexible collections if they are lacking for this collection
                 for (let index = actorCollections.length; index < collectionCount; index++) {
-                    actorCollections[index] = 
-                    info(actorCollections.length);
+                    actorCollections[index] = collection
                 }
             });
 

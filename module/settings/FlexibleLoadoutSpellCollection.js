@@ -3,7 +3,7 @@ import FlexibleLoadoutFlexibleCollection from "./FlexibleLoadoutFlexibleCollecti
 export default class FlexibleLoadoutSpellCollection {
     constructor() {
         // All SpellCollections belonging to Actor
-        this.collections = new Map();
+        this.collections = new Map(); // {collectionId, FlexibleCollections}
     }
 
     addCollection(collectionId, collection) {
