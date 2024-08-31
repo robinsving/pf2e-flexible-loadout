@@ -6,15 +6,25 @@ export default class FlexibleLoadoutSpellCollection {
         this.collections = new Map(); // {collectionId, FlexibleCollections}
     }
 
-    addCollection(collectionId, collection) {
-        this.collections.set(collectionId, new FlexibleLoadoutFlexibleCollection(description, collection))
+    addCollection(collection) {
+        this.collections.set(collection.id, new FlexibleLoadoutFlexibleCollection())
     }
 
-    getCollections(collectionId) {
-        return this.collections[collectionId];
+    getCollection(collectionId) {
+        return this.collections.get(collectionId);
     }
 
-    hasCollections(collectionId) {
+    hasCollection(collectionId) {
         return this.collections.has(collectionId);
+    }
+
+    getCurrentCollection(collectionId) {
+        if (this.hasCollection(collectionId) && this.getCollection(collectionId).currentCollection)
+            return this.collections[collectionId].flexibleCollections(this.collections[collectionId].currentCollection);
+    }
+
+    setCurrentCollection(collectionId, flexibleCollectionDescription) {
+        if (this.hasCollection(collectionId))
+            return this.collections[collectionId].currentCollection = flexibleCollectionDescription;
     }
 }

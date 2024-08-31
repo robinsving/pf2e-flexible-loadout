@@ -16,6 +16,17 @@ export default class CharacterSheetHook {
                 .map((sheetClass) => sheetClass.cls)
                 .map((sheet) => sheet.name)
                 .forEach((sheet) => { this.#registerHook(sheet) });
+
+
+            // Create a button to create clones
+            // Create a feature, that when loading the Sheet, it removes all clones that aren't the selected clone
+            // Create a button to a page to list the clones
+            // Create a feature to choose the main clone
+            
+            // Get the spellcasting entry
+            // Location for the prepared slots
+            Array.from(game.actors.get(data.actor._id).spellcasting.collections.values()).filter(s => s.entry?.system?.prepared?.value == "prepared")
+            //.filter(s => spellcollections.contains(s.id))[0].system.slots
         });
     }
 
@@ -32,11 +43,11 @@ export default class CharacterSheetHook {
                 return;
 
             // fetch current Actor's collections
-            const actorCollections = getNestedProperty(data, "spellCollectionGroups.known-spells")
+            const spellCollectionGroup = data.spellCollectionGroups["known-spells"]
                 .filter(s => s.isPrepared && s.hasCollection); // || s.isFlexible)
 
             // if there are no spell collections, we needn't continue
-            if (!actorCollections.length)
+            if (!spellCollectionGroup.length)
                 return;
 
             /* TODO
@@ -44,25 +55,42 @@ export default class CharacterSheetHook {
             */
            
             // load Collections for Actor
-            const collectionCount = getSettings(settings.repertoireCount.id);
+            const settingsFlexibleCount = getSettings(settings.repertoireCount.id);
             const repertoireStorage = getSettings(settings.repertoireStorage.id);
 
             // If this Actor has nothing stored
             if (!repertoireStorage.hasActor(actorId))
                 repertoireStorage.addActor(actorId);
 
-            actorCollections.forEach(collection => {
+            const flexbleActor = repertoireStorage.getActor(actorId);
+
+            spellCollectionGroup.forEach(collection => {
                 info(collection.id);
 
+                if (!flexbleActor.hasCollection(collection.id))
+                    flexbleActor.addCollection(collection)
+
+                const storedCollection = flexbleActor.getCollection(collection.id);
+
                 // Create new flexible collections if they are lacking for this collection
-                for (let index = actorCollections.length; index < collectionCount; index++) {
-                    actorCollections[index] = collection
+                for (let index = storedCollection.getFlexibleCollectionCount(); index < settingsFlexibleCount; index++) {
+                    storedCollection.addFlexibleCollection(`${collection.id}_${index}`, collection);
+                }
+
+                let currentCollection = flexbleActor.getCurrentCollection(collection.id);
+                if (currentCollection)
+                    collection = currentCollection;
+                else {
+                    // TODO: Let's do a test, and manipulate the collections by changing places of two spells, just to make sure that we can replace the current collection on click
+                    // it may be that we need to manipulate the object before the call to render the sheet. This may require re-rendering.
+
+                    delete collection.groups[0].active[4];
                 }
             });
 
 
-            /* TODO
 
+            /* TODO
             for each Collection belonging to actor
                 Check if they exist, otherwise copy from actorId's default Collection
                 Create a button for each, with name and appropriate Collection
@@ -81,8 +109,8 @@ export default class CharacterSheetHook {
                 </a>`
             );
 
-            // add onclick event to start a Revitalizer run for Actor Id
-            button.click(() => Hooks.call(replaceLoadedCollection, [data.actor._id], 1));
+            // add onclick event to replace collection for Actor
+            button.click(() => Hooks.call(replaceLoadedCollection, data.actor, spellCollectionGroup[0]));
 
             // remove any existing versions of button
             html.closest('.app').find(`.${className}`).remove();
